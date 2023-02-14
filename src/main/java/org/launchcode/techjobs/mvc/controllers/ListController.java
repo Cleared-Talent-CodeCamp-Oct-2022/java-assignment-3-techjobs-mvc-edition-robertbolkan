@@ -6,11 +6,13 @@ import org.launchcode.techjobs.mvc.models.JobData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by LaunchCode
@@ -22,13 +24,14 @@ public class ListController {
     static HashMap<String, String> columnChoices = new HashMap<>();
     static HashMap<String, Object> tableChoices = new HashMap<>();
 
-    public ListController () {
+    public ListController() {
         columnChoices.put("all", "All");
         columnChoices.put("employer", "Employer");
         columnChoices.put("location", "Location");
         columnChoices.put("positionType", "Position Type");
         columnChoices.put("coreCompetency", "Skill");
 
+//       tableChoices.put("jobTitle", JobData.findAll());
         tableChoices.put("employer", JobData.getAllEmployers());
         tableChoices.put("location", JobData.getAllLocations());
         tableChoices.put("positionType", JobData.getAllPositionTypes());
@@ -37,6 +40,7 @@ public class ListController {
 
     @GetMapping(value = "")
     public String list(Model model) {
+//        model.addAttribute("jobs", JobData.findAll()); //added
         model.addAttribute("columns", columnChoices);
         model.addAttribute("tableChoices", tableChoices);
         model.addAttribute("employers", JobData.getAllEmployers());
@@ -50,7 +54,7 @@ public class ListController {
     @GetMapping(value = "jobs")
     public String listJobsByColumnAndValue(Model model, @RequestParam String column, @RequestParam(required = false) String value) {
         ArrayList<Job> jobs;
-        if (column.equals("all")){
+        if (column.equals("all")) {
             jobs = JobData.findAll();
             model.addAttribute("title", "All Jobs");
         } else {
@@ -61,4 +65,6 @@ public class ListController {
 
         return "list-jobs";
     }
+
+
 }
